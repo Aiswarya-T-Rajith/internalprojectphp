@@ -1,13 +1,12 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
-use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Events\PasswordReset;
-use App\Models\User;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Exception;
 
 
@@ -43,17 +42,30 @@ class PasswordResetController extends Controller
     {
         Log::info('Password reset request received.', ['email' => $request->email, 'token' => $request->token]);
 
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'token' => 'required',
             'email' => 'required|email|exists:users,email',
-            'password' => 'required|min:8|confirmed',
+            'password' => [
+                'required',
+                'min:8',
+                'confirmed'            
+            ],
+        ],[
+        'email.exists' => 'This email is not registered in our system.',
+        'password.min' => 'The password must be at least 8 characters long.',
+        'password.confirmed' => 'The password confirmation does not match.'        
         ]);
+
+        // **Check if validation fails and return errors**
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
 
         try{
             $status = Password::reset(
                 $request->only('email', 'password', 'password_confirmation', 'token'),
                 function ($user, $password) {
-                    $user->password = bcrypt($password);
+                    $user->password = Hash::make($password);
                     $user->save();
                     event(new PasswordReset($user));
                 }

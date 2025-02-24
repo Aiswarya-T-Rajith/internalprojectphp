@@ -21,12 +21,12 @@ Route::post('/login',[AuthController::class, 'login']);
 Route::post('/createadmin',[CreateAdminController::class,'createAdmin']);
 
 // Forgot Password Route
-Route::post('/forgotpassword', [PasswordResetController::class, 'sendResetLink']);
+Route::post('/forgotpassword', [PasswordResetController::class, 'sendResetLink'])->name('password.email');
 
 // Reset Password Route
-Route::post('/resetpassword', [PasswordResetController::class, 'reset']);
+Route::post('/resetpassword', [PasswordResetController::class, 'reset'])->name('password.reset');
 
 // Define the password reset route explicitly
-Route::get('/reset-password/{token}', function ($token) {
-    return response()->json(['token' => $token]);
-})->name('password.reset');
+// Route::get('/reset-password/{token}', function ($token) {
+//     return response()->json(['token' => $token]);
+// })->name('password.reset');

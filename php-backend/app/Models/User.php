@@ -9,13 +9,13 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-    protected $table = 'login_details'; // Explicitly defining the table name
+    protected $table = 'users'; // Explicitly defining the table name
 
     protected $primaryKey = 'user_id'; // Set primary key to 'user_id'
 
 
     protected $fillable = [
-        'email_id',
+        'email',
         'password',
         'role'
     ];
@@ -29,4 +29,12 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+     /**
+     * Override method to use email_id for password reset.
+     */
+    public function getEmailForPasswordReset()
+    {
+        return $this->email;
+    }
 }

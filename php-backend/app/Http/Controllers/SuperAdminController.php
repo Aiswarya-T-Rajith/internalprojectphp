@@ -17,7 +17,7 @@ class SuperAdminController extends Controller
     
         //create a new superadmin user
         $superAdmin = User::create([
-            'email_id' => 'superadmin@gmail.com',
+            'email' => 'aiswarya@pumexinfotech.com',
             'password'=> Hash::make('SuperAdmin@123'),
             'role'=>'superadmin',
         ]);

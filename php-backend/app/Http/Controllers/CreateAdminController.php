@@ -19,7 +19,7 @@ class CreateAdminController extends Controller
 
         //validation 
          $validator = Validator::make($request->all(), [
-            'email_id' => 'required|email|unique:login_details,email_id',
+            'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8',
             'role' => 'required|in:admin, employee, superadmin',
             'full_name' => 'required|string|max:255',
@@ -54,9 +54,9 @@ class CreateAdminController extends Controller
 
         try{
 
-            //Insert into login_details table
+            //Insert into Users table
             $login = User::create([
-                'email_id' => $request->email_id,
+                'email' => $request->email,
                 'password' => bcrypt($request->password),
                 'role' => $request->role ?? 'admin'
             ]);

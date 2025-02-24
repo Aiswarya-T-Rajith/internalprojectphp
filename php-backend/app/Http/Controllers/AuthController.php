@@ -17,7 +17,7 @@ class AuthController extends Controller
     {
         //Ensures both email and password is provided
         $validator = Validator::make($request->all(), [
-            'email_id' => 'required',
+            'email' => 'required',
             'password' => 'required',
         ]);
 
@@ -26,7 +26,7 @@ class AuthController extends Controller
         }
 
         // Find user by user_id, fetches only the first matching record from the database.
-        $user = User::where('email_id', $request->email_id)->first();
+        $user = User::where('email', $request->email)->first();
 
         if (!$user) {
             return response()->json(['message' => 'User not found'], 404);
@@ -44,7 +44,7 @@ class AuthController extends Controller
             'message' => 'Login successful',
             'token' => $token,
             'user' => [
-                'email_id' => $user->email_id,
+                'email' => $user->email,
                 'role' => $user->role,
             ],
         ]);

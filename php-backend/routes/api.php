@@ -9,6 +9,7 @@ use App\Http\Controllers\CreateAdminController;
 use App\Http\Controllers\EmployeeDetailsController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\UserDetailsController;
+use App\Http\Controllers\SinleUserDetailsController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -37,3 +38,6 @@ Route::get('/getalladmins',[AdminDetailsController::class,'getAllAdmins']);
 
 //Get all employee details Route
 Route::get('/getallemployees',[EmployeeDetailsController::class,'getAllEmployees']);
+
+//Get single user details
+Route::get('/getsingleuserdetails/{user_id}', [SinleUserDetailsController::class, 'getSingleUserDetaile']);

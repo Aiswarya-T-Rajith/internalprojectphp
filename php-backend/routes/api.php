@@ -1,10 +1,12 @@
 <?php
 
+use App\Http\Controllers\AdminDetailsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CreateAdminController;
+use App\Http\Controllers\EmployeeDetailsController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\UserDetailsController;
 
@@ -30,3 +32,8 @@ Route::post('/resetpassword', [PasswordResetController::class, 'reset'])->name('
 //Get all user details Route
 Route::get('/getallusers', [UserDetailsController::class, 'getAllUsers']);
 
+//Get all admin details Route
+Route::get('/getalladmins',[AdminDetailsController::class,'getAllAdmins']);
+
+//Get all employee details Route
+Route::get('/getallemployees',[EmployeeDetailsController::class,'getAllEmployees']);

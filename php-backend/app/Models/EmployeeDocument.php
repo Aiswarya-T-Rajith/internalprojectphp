@@ -14,7 +14,12 @@ class EmployeeDocument extends Model
     protected $fillable = [
         'document_type', 'document_name', 'document_file_path', 'emp_id'
     ];
-    public function user(){
-        return $this -> belongsTo(FinancialDetail::class, 'emp_id', 'emp_id');
+     /**
+     * Relationship: Many EmployeeDocuments belong to one EmployeeDetail
+     */
+    public function employee()
+    {
+        return $this->belongsTo(EmployeeDetail::class, 'emp_id', 'emp_id');
     }
+
 }

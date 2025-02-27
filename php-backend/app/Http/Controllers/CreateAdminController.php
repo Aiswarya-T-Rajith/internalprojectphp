@@ -21,7 +21,7 @@ class CreateAdminController extends Controller
          $validator = Validator::make($request->all(), [
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8',
-            'role' => 'required|in:admin, employee, superadmin',
+            'role' => 'required|in:admin,employee,superadmin',
             'full_name' => 'required|string|max:255',
             'date_of_birth' => 'required|date|before:today',
             'gender' => 'required|in:male, female, other',

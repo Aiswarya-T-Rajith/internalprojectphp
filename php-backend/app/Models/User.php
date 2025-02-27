@@ -37,4 +37,12 @@ class User extends Authenticatable
     {
         return $this->email;
     }
+
+     /**
+     * Relationship: One User has One UsersData
+     */
+    public function userDetails()
+    {
+        return $this->hasOne(UsersData::class, 'user_id', 'user_id');
+    }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CreateAdminController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\UserDetailsController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -26,7 +27,6 @@ Route::post('/forgotpassword', [PasswordResetController::class, 'sendResetLink']
 // Reset Password Route
 Route::post('/resetpassword', [PasswordResetController::class, 'reset'])->name('password.reset');
 
-// Define the password reset route explicitly
-// Route::get('/reset-password/{token}', function ($token) {
-//     return response()->json(['token' => $token]);
-// })->name('password.reset');
+//Get all user details Route
+Route::get('/getallusers', [UserDetailsController::class, 'getAllUsers']);
+

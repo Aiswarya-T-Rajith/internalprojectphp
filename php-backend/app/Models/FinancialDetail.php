@@ -15,7 +15,11 @@ class FinancialDetail extends Model
         'bank_account_number', 'ifsc_code', 'pan_card_number', 'UAN',
         'emp_id'
     ];
-    public function user(){
-        return $this -> belongsTo(EmployeeDetail::class, 'emp_id', 'emp_id');
+    /**
+     * Relationship: Many FinancialDetails belong to one EmployeeDetail
+     */
+    public function employee()
+    {
+        return $this->belongsTo(EmployeeDetail::class, 'emp_id', 'emp_id');
     }
 }

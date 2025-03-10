@@ -12,7 +12,7 @@ class EmployeeDocument extends Model
     protected $primaryKey = 'documents_id';
     public $timestamps = true;
     protected $fillable = [
-        'document_type', 'document_name', 'document_file_path', 'emp_id'
+        'document_type', 'document_name', 'document_file_path', 'emp_id', 'admin_verification_status', 'admin_verification_comments', 'admin_verified_at', 'superadmin_verification_status', 'superadmin_verification_comments', 'superadmin_verified_at'
     ];
      /**
      * Relationship: Many EmployeeDocuments belong to one EmployeeDetail

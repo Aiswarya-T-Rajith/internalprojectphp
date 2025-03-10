@@ -10,6 +10,7 @@ use App\Http\Controllers\EmployeeDetailsController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\UserDetailsController;
 use App\Http\Controllers\SinleUserDetailsController;
+use App\Http\Controllers\EmployeeVerificationController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -19,7 +20,7 @@ Route::get('/user', function (Request $request) {
 Route::get('/createsuperadmin', [SuperAdminController::class, 'createSuperAdmin']);
 
 //Route for Login
-Route::post('/login',[AuthController::class, 'login']);
+Route::post('/login',[AuthController::class, 'login'])->name('login');
 
 //Route for creating admin
 Route::post('/createadmin',[CreateAdminController::class,'createAdmin']);
@@ -41,3 +42,8 @@ Route::get('/getallemployees',[EmployeeDetailsController::class,'getAllEmployees
 
 //Get single user details
 Route::get('/getsingleuserdetails/{user_id}', [SinleUserDetailsController::class, 'getSingleUserDetaile']);
+
+//Document verification Route
+Route::middleware(['auth:sanctum'])->group(function(){
+    Route::post('/employeeverification/verify',[EmployeeVerificationController::class,'updateVerification']);
+});

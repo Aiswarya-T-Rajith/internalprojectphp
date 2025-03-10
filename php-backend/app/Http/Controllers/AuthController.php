@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -27,6 +28,7 @@ class AuthController extends Controller
 
         // Find user by user_id, fetches only the first matching record from the database.
         $user = User::where('email', $request->email)->first();
+
 
         if (!$user) {
             return response()->json(['message' => 'User not found'], 404);

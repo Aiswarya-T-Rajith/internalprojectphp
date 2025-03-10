@@ -12,18 +12,15 @@ use App\Http\Controllers\UserDetailsController;
 use App\Http\Controllers\SinleUserDetailsController;
 use App\Http\Controllers\EmployeeVerificationController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+// Route::get('/user', function (Request $request) {
+//     return $request->user();
+// })->middleware('auth:sanctum');
 
 // Route to create a Super Admin
 Route::get('/createsuperadmin', [SuperAdminController::class, 'createSuperAdmin']);
 
 //Route for Login
-Route::post('/login',[AuthController::class, 'login'])->name('login');
-
-//Route for creating admin
-Route::post('/createadmin',[CreateAdminController::class,'createAdmin']);
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 // Forgot Password Route
 Route::post('/forgotpassword', [PasswordResetController::class, 'sendResetLink'])->name('password.email');
@@ -31,19 +28,24 @@ Route::post('/forgotpassword', [PasswordResetController::class, 'sendResetLink']
 // Reset Password Route
 Route::post('/resetpassword', [PasswordResetController::class, 'reset'])->name('password.reset');
 
-//Get all user details Route
-Route::get('/getallusers', [UserDetailsController::class, 'getAllUsers']);
 
-//Get all admin details Route
-Route::get('/getalladmins',[AdminDetailsController::class,'getAllAdmins']);
+Route::middleware(['auth:sanctum'])->group(function () {
+    //Route for creating new user
+    Route::post('/createadmin', [CreateAdminController::class, 'createAdmin']);
 
-//Get all employee details Route
-Route::get('/getallemployees',[EmployeeDetailsController::class,'getAllEmployees']);
 
-//Get single user details
-Route::get('/getsingleuserdetails/{user_id}', [SinleUserDetailsController::class, 'getSingleUserDetaile']);
+    //Get all user details Route
+    Route::get('/getallusers', [UserDetailsController::class, 'getAllUsers']);
 
-//Document verification Route
-Route::middleware(['auth:sanctum'])->group(function(){
-    Route::post('/employeeverification/verify',[EmployeeVerificationController::class,'updateVerification']);
+    //Get all admin details Route
+    Route::get('/getalladmins', [AdminDetailsController::class, 'getAllAdmins']);
+
+    //Get all employee details Route
+    Route::get('/getallemployees', [EmployeeDetailsController::class, 'getAllEmployees']);
+
+    //Get single user details
+    Route::get('/getsingleuserdetails/{user_id}', [SinleUserDetailsController::class, 'getSingleUserDetaile']);
+
+    //Document verification Route
+    Route::post('/employeeverification/verify', [EmployeeVerificationController::class, 'updateVerification']);
 });

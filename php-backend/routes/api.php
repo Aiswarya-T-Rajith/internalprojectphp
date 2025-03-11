@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminDetailsController;
+use App\Http\Controllers\EmployeeCountController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SuperAdminController;
@@ -48,4 +49,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     //Document verification Route
     Route::post('/employeeverification/verify', [EmployeeVerificationController::class, 'updateVerification']);
+
+    //Get the count of following, total employees, on-boarding, Exit employee
+    Route::get('/employeecount', [EmployeeCountController::class, 'employeeCount']);
 });

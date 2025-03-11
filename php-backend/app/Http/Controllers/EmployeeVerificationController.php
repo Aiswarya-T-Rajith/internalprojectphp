@@ -40,6 +40,7 @@ class EmployeeVerificationController extends Controller
             $document->superadmin_verification_comments = $request->comments;
         }
 
+        Log::debug("Final document state after verification:", $document->toArray());
         $document->save();
 
         return response()->json(['message' => 'Verification status updated successfully.'], 200);

@@ -41,9 +41,9 @@ class CreateAdminController extends Controller
             'ifsc_code' => 'nullable|string|max:11',
             'pan_card_number' => 'nullable|string|max:10',
             'UAN' => 'nullable|string|max:12',
-            'document_file_path' => 'nullable|file|mimes:pdf,jpeg,png,docx|max:10240', // Ensure valid document format and size
             'document_type' => 'required|string|max:255',
-            'document_name' => 'required|string|max:255',
+            'documents_section' => 'required|array',
+            'documents_section.*' => 'required|file|mimes:pdf,jpeg,png,docx|max:10240',
         ]);
 
         if ($validator->fails()) {
@@ -106,8 +106,7 @@ class CreateAdminController extends Controller
             $document = EmployeeDocument::create([
                 'emp_id' => $employee->emp_id,
                 'document_type' => $request->document_type,
-                'document_name' => $request->document_name,
-                'document_file_path' => $documentPath
+                'documents_section' =>$request->documents_section
             ]);
 
             DB::commit();

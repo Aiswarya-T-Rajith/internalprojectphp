@@ -12,6 +12,7 @@ use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\UserDetailsController;
 use App\Http\Controllers\SinleUserDetailsController;
 use App\Http\Controllers\EmployeeVerificationController;
+use App\Http\Controllers\EmployeeDocumentsController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -52,4 +53,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     //Get the count of following, total employees, on-boarding, Exit employee
     Route::get('/employeecount', [EmployeeCountController::class, 'employeeCount']);
+
+    //insert a new documents
+    Route::post('/insertdocument/{emp_id}', [EmployeeDocumentsController::class, 'insertDocument']);
+
+    //update an existing document
+    Route::post('/updatedocument/{emp_id}', [EmployeeDocumentsController::class, 'updateDocument']);
 });

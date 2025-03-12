@@ -47,8 +47,10 @@ class UserSeeder extends Seeder
                     'pan_card_number' => 'PAN1234567',
                     'UAN' => 'UAN1234567890',
                     'document_type' => 'On-boarding',
-                    'document_name' => 'Aadhar',
-                    'document_file_path' => 'assets/invoice.pdf'
+                    'documents_section' => json_encode([
+                        'PAN Card' => 'assets/invoice.pdf',
+                        'Aadhar Card' => 'assets/invoice.pdf'
+                    ])
                 ],
                 [
                     'email' => 'Kevin@example.com',
@@ -74,8 +76,10 @@ class UserSeeder extends Seeder
                     'pan_card_number' => 'PAN7654321',
                     'UAN' => 'UAN0987654321',
                     'document_type' => 'Exit employee',
-                    'document_name' => 'Employee ID',
-                    'document_file_path' => 'assets/invoice.pdf'
+                    'documents_section' => json_encode([
+                        'doc_1' => 'assets/invoice.pdf',
+                        'doc_2' => 'assets/invoice.pdf'
+                    ])
                 ],
                 [
                     'email' => 'alice@gmail.com',
@@ -101,8 +105,10 @@ class UserSeeder extends Seeder
                     'pan_card_number' => 'PAN7654321',
                     'UAN' => 'UAN0987654321',
                     'document_type' => 'On-boarding',
-                    'document_name' => 'Aadhar',
-                    'document_file_path' => 'assets/invoice.pdf'
+                   'documents_section' => json_encode([
+                        'Birth Certificate' => 'assets/invoice.pdf',
+                        'PAN Card' => 'assets/invoice.pdf'
+                    ])
                 ],
                 [
                     'email' => 'bob@gmail.com',
@@ -128,8 +134,10 @@ class UserSeeder extends Seeder
                     'pan_card_number' => 'PAN8765432',
                     'UAN' => 'UAN8765432109',
                     'document_type' => 'Exit employee',
-                    'document_name' => 'passport',
-                    'document_file_path' => 'assets/invoice.pdf'
+                    'documents_section' => json_encode([
+                        'doc_1' => 'assets/invoice.pdf',
+                        'doc_2' => 'assets/invoice.pdf'
+                    ])
                 ],
                 [
                     'email' => 'charlie@gmail.com',
@@ -155,8 +163,10 @@ class UserSeeder extends Seeder
                     'pan_card_number' => 'PAN7654321',
                     'UAN' => 'UAN7654321098',
                     'document_type' => 'On-boarding',
-                    'document_name' => 'Passport',
-                    'document_file_path' => 'assets/invoice.pdf'
+                    'documents_section' => json_encode([
+                        'Aadhar Card' => 'assets/invoice.pdf',
+                        'PAN Card' => 'assets/invoice.pdf'
+                    ])
                 ],
                 [
                     'email' => 'diana@gmail.com',
@@ -182,8 +192,10 @@ class UserSeeder extends Seeder
                     'pan_card_number' => 'PAN6543210',
                     'UAN' => 'UAN6543210987',
                     'document_type' => 'On-boarding',
-                    'document_name' => 'Latest Payslip',
-                    'document_file_path' => 'assets/invoice.pdf'
+                    'documents_section' => json_encode([
+                        'PAN Card' => 'assets/invoice.pdf',
+                        'Birth Certificate' => 'assets/invoice.pdf'
+                    ])
                 ],
                 [
                     'email' => 'edward@gmail.com',
@@ -209,8 +221,10 @@ class UserSeeder extends Seeder
                     'pan_card_number' => 'PAN5432109',
                     'UAN' => 'UAN5432109876',
                     'document_type' => 'Exit employee',
-                    'document_name' => 'Aadhar',
-                    'document_file_path' => 'assets/invoice.pdf'
+                    'documents_section' => json_encode([
+                        'doc_1' => 'assets/invoice.pdf',
+                        'doc_2' => 'assets/invoice.pdf'
+                    ])
                 ]
             ];
 
@@ -255,8 +269,7 @@ class UserSeeder extends Seeder
                 EmployeeDocument::create([
                     'emp_id' => $employee->emp_id,
                     'document_type' => $userData['document_type'],
-                    'document_name' => $userData['document_name'],
-                    'document_file_path' => $userData['document_file_path']
+                    'documents_section' => $userData['documents_section']
                 ]);
             }
 

@@ -1,14 +1,15 @@
 <?php
 
 namespace App\Http\Controllers;
+use App\Notifications\ResetPasswordNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Models\User;
 use Exception;
-
+use Illuminate\Support\Facades\DB;
 
 class PasswordResetController extends Controller
 {
@@ -17,31 +18,51 @@ class PasswordResetController extends Controller
     */
     public function sendResetLink(Request $request)
     {
-        Log::info('Request data:', ['data' => $request->all()]);
 
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email|exists:users,email',
-        ]);
+        ],
+    [
+        'email.exists' => 'User not found',
+    ]);
+
+        if($validator->fails()){
+            return response()->json(['errors'=>$validator->errors()],422);
+        }
 
         try {
             $status = Password::sendResetLink($request->only('email'));
+    
+            // Fetch the user to get the email
+            $user = User::where('email', $request->email)->first();
+    
+            if (!$user) {
+                return response()->json(['error' => 'User not found'], 404);
+            }
+    
+            // Generate frontend reset link
+            $token = DB::table('password_reset_tokens')->where('email', $user->email)->value('token');
+    
+            if (!$token) {
+                return response()->json(['error' => 'Reset token not found'], 400);
+            }
+    
+            $resetUrl = "http://localhost:3001/ResetPassword?token=$token&email=" . urlencode($user->email);
 
-            Log::info('Password reset email status:', ['status' => $status]);
+             // Send custom notification
+            $user->notify(new ResetPasswordNotification($token, $user->email));
 
-
+    
             return $status === Password::RESET_LINK_SENT
-                ? response()->json(['message' => 'Mail sent successfully'], 200)
+                ? response()->json(['message' => 'Mail sent successfully', 'reset_link' => $resetUrl], 200)
                 : response()->json(['error' => __($status)], 400);
-        } catch (Exception $e) {
-            Log::error('Error in sending password reset email:', ['error' => $e->getMessage()]);
+        }catch (Exception $e) {
             return response()->json(['error' => 'Something went wrong. Please try again.'], 500);
         }
     }
 
     public function reset(Request $request)
     {
-        Log::info('Password reset request received.', ['email' => $request->email, 'token' => $request->token]);
-
         $validator = Validator::make($request->all(), [
             'token' => 'required',
             'email' => 'required|email|exists:users,email',
@@ -70,14 +91,11 @@ class PasswordResetController extends Controller
                     event(new PasswordReset($user));
                 }
             );
-
-            Log::info('Password reset status:', ['status' => $status]);
     
             return $status === Password::PASSWORD_RESET
                 ? response()->json(['message' => 'Password reset successful.'])
                 : response()->json(['error' => __($status)], 400);
             }catch (Exception $e) {
-            Log::error('Error in password reset:', ['error' => $e->getMessage()]);
             return response()->json(['error' => 'Something went wrong. Please try again.'], 500);
         }
 

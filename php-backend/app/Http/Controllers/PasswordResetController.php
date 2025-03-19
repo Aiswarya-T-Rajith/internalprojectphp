@@ -47,7 +47,7 @@ class PasswordResetController extends Controller
                 return response()->json(['error' => 'Reset token not found'], 400);
             }
     
-            $resetUrl = "http://localhost:3001/ResetPassword?token=$token&email=" . urlencode($user->email);
+            $resetUrl = "http://localhost:3001/resetpassword?token=$token&email=" . urlencode($user->email);
 
              // Send custom notification
             $user->notify(new ResetPasswordNotification($token, $user->email));

@@ -4,12 +4,14 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import loginImage from "../assets/login.jpg";
 import axios from "axios";
 import { Eye, EyeOff } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
     const[email, setEmail] = useState("");
     const[password, setPassword] = useState("");
     const [errors, setErrors] = useState({});
     const [passwordToggle,setPasswordToggle] = useState(false);
+    const navigate = useNavigate();
 
     const togglePassword=()=>{
         setPasswordToggle((prev)=>!prev);
@@ -57,13 +59,14 @@ function Login() {
                     email,
                     password
                 });
-    
-                // Handle successful response
-                console.log("Login Successful:", response.data);
-    
-                // Example: Store token in localStorage (if needed)
+
+                console.log("Login Successful:", response.data.user.role);
                 localStorage.setItem("token", response.data.token);
+                localStorage.setItem("UserRole",response.data.user.role);
     
+                if(response.data.user.role === "superadmin"){
+                  navigate("/")
+                }
                 // Redirect user or update UI
                 alert("Login successful!");
     
@@ -145,12 +148,12 @@ function Login() {
                               required
                             />
                             <span
-                                                className="position-absolute end-0 translate-middle-y me-3 cursor-pointer"
-                                                style={{ cursor: "pointer", top:"50%" }}
-                                                onClick={()=>togglePassword()}
-                                              >
-                                              {passwordToggle?<EyeOff size={20}/>:<Eye size={20}/>}
-                                              </span>
+                              className="position-absolute end-0 translate-middle-y me-3 cursor-pointer"
+                              style={{ cursor: "pointer", top:"50%" }}
+                              onClick={()=>togglePassword()}
+                            >
+                            {passwordToggle?<EyeOff size={20}/>:<Eye size={20}/>}
+                            </span>
                             </div>
                             {errors.password && <div className="text-danger mt-1">{errors.password}</div>}
                           </div>
@@ -187,7 +190,7 @@ function Login() {
                         <div className="col-12 h-100">
                           <div className="justify-content-md-center">
                             <a
-                              href="#!"
+                              href="/forgotpassword"
                               className="link-secondary text-decoration-none"
                             >
                               Forgot password

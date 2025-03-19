@@ -3,14 +3,19 @@ import "../style/login.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import loginImage from "../assets/login.jpg";
 import axios from "axios";
+import { Eye, EyeOff } from "lucide-react";
 
 function Login() {
     const[email, setEmail] = useState("");
     const[password, setPassword] = useState("");
     const [errors, setErrors] = useState({});
+    const [passwordToggle,setPasswordToggle] = useState(false);
+
+    const togglePassword=()=>{
+        setPasswordToggle((prev)=>!prev);
+    }
 
     const validateForm = () => {
-        console.log("bbbbbbbbbbbbbbbbbb",email);
         let validationErrors = {};
     
         // Email validation
@@ -129,8 +134,9 @@ function Login() {
                             >
                               Password <span className="text-danger">*</span>
                             </label>
+                            <div className="mb-3 position-relative">
                             <input
-                              type="password"
+                              type={passwordToggle?"text":"password"}
                               className={`form-control ${errors.password ? "is-invalid" : ""}`}
                               name="password"
                               id="password"
@@ -138,6 +144,14 @@ function Login() {
                               onChange={(e) => setPassword(e.target.value)}
                               required
                             />
+                            <span
+                                                className="position-absolute end-0 translate-middle-y me-3 cursor-pointer"
+                                                style={{ cursor: "pointer", top:"50%" }}
+                                                onClick={()=>togglePassword()}
+                                              >
+                                              {passwordToggle?<EyeOff size={20}/>:<Eye size={20}/>}
+                                              </span>
+                            </div>
                             {errors.password && <div className="text-danger mt-1">{errors.password}</div>}
                           </div>
                           <div className="col-12">
